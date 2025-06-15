@@ -10,6 +10,7 @@ const { OpenAI } = require('openai');
 const axios = require('axios');
 const PDFDocument = require('pdfkit');
 const nodemailer = require('nodemailer');
+const { google } = require('googleapis');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
