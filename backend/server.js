@@ -1,11 +1,11 @@
-// server.js (採用新的啟動流程)
+// server.js (最終、完整、包含所有路由的版本)
 
 require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose'); // 確認已引入
+const mongoose = require('mongoose');
 const { OpenAI } = require('openai');
 const axios = require('axios');
 const PDFDocument = require('pdfkit');
@@ -23,19 +23,42 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
-// --- API 端點 (所有 API 路由都放在這裡) ---
-const authRoutes = require('./routes/auth'); //
-app.use('/api/auth', authRoutes);         //
-app.use('/api/itineraries', require('./routes/itineraries')); //
-app.use('/api/google', require('./routes/google')); //
+// --- API 路由設定 ---
+console.log("正在設定 API 路由...");
 
-// 1. AI 聊天 API
+// 引入各個部門的路由檔案
+const authRoutes = require('./routes/auth');
+const itineraryRoutes = require('./routes/itineraries');
+const googleRoutes = require('./routes/google');
+
+// 指派總機的轉接任務
+app.use('/api/auth', authRoutes);
+console.log("'/api/auth' 路由已掛載");
+
+app.use('/api/itineraries', itineraryRoutes);
+console.log("'/api/itineraries' 路由已掛載");
+
+app.use('/api/google', googleRoutes);
+console.log("'/api/google' 路由已掛載");
+
+
+// --- 由總機直接處理的 API ---
+
+// 根目錄測試路由
+app.get('/', (req, res) => {
+    res.json({
+        message: "歡迎來到 AI 旅遊規劃師後端！",
+        status: "伺服器運行中且路由已正確載入",
+        timestamp: new Date().toISOString()
+    });
+});
+console.log("根目錄測試路由 '/' 已掛載");
+
+// AI 聊天 API
 app.post('/api/chat', async (req, res) => {
-    // ... 此處內容不變 ...
     try {
         const userMessage = req.body.message;
         if (!userMessage) return res.status(400).json({ error: '沒有收到訊息' });
-        console.log("成功收到前端訊息:", userMessage);
         const completion = await openai.chat.completions.create({
             messages: [ { role: 'system', content: '你是一位專業的歐洲旅遊規劃師。' }, { role: 'user', content: userMessage } ],
             model: 'gpt-3.5-turbo',
@@ -46,10 +69,10 @@ app.post('/api/chat', async (req, res) => {
         res.status(500).json({ error: '與 AI 溝通時發生錯誤' });
     }
 });
+console.log("'/api/chat' 路由已掛載");
 
-// 2. 路線規劃 API
+// 路線規劃 API
 app.post('/api/route', async (req, res) => {
-    // ... 此處內容不變 ...
     try {
         const { startCity, endCity } = req.body;
         if (!startCity || !endCity) return res.status(400).json({ error: '起點和終點為必填欄位' });
@@ -66,18 +89,16 @@ app.post('/api/route', async (req, res) => {
         const routeResponse = await axios.get(osrmUrl);
         if (routeResponse.data.routes && routeResponse.data.routes.length > 0) {
             res.json({ route: routeResponse.data.routes[0].geometry });
-        } else {
-            throw new Error('無法規劃路線');
-        }
+        } else { throw new Error('無法規劃路線'); }
     } catch (error) {
         console.error('後端 /api/route 處理時發生錯誤:', error.message);
         res.status(500).json({ error: `路線規劃失敗: ${error.message}` });
     }
 });
+console.log("'/api/route' 路由已掛載");
 
-// 3. 匯出 PDF 並寄送郵件 API
+// 匯出 PDF 並寄送郵件 API
 app.post('/api/export/email', async (req, res) => {
-    // ... 此處內容不變 ...
     const { email, history } = req.body;
     if (!email) return res.status(400).json({ error: 'Email為必填欄位' });
     if (!history || history.length === 0) return res.status(400).json({ error: '沒有行程內容可供匯出' });
@@ -109,34 +130,29 @@ app.post('/api/export/email', async (req, res) => {
             attachments: [{ filename: 'AI旅遊手冊.pdf', content: pdfBuffer, contentType: 'application/pdf' }],
         };
         await transporter.sendMail(mailOptions);
-        console.log(`成功寄送 AI 行程 PDF 至: ${email}`);
         res.status(200).json({ message: 'AI 旅遊手冊已成功寄送至您的信箱！' });
     } catch (error) {
         console.error('後端 /api/export/email 處理時發生錯誤:', error);
         res.status(500).json({ error: '寄送郵件時發生內部錯誤' });
     }
 });
+console.log("'/api/export/email' 路由已掛載");
 
 
 // --- 啟動伺服器與資料庫連線 ---
 const startServer = async () => {
     try {
-        console.log("從 .env 檔案讀取到的 MONGO_URI 是:", process.env.MONGO_URI);
-
-        console.log("正在嘗試連線至 MongoDB...");
-        await mongoose.connect(process.env.MONGO_URI);
+        const mongoURI = process.env.MONGO_URI;
+        if (!mongoURI) throw new Error('讀取不到 MONGO_URI');
+        await mongoose.connect(mongoURI);
         console.log("MongoDB 連線成功！");
-
-        // 當資料庫連線成功後，才啟動 Express 伺服器
         app.listen(port, () => {
             console.log(`伺服器在資料庫連線成功後，正在 http://localhost:${port} 上運行`);
         });
-
     } catch (error) {
-        console.error("無法連線至 MongoDB:", error);
-        process.exit(1); // 連線失敗則結束程式
+        console.error("無法連線至 MongoDB 或啟動伺服器:", error);
+        process.exit(1);
     }
 };
 
-// 執行啟動函式
 startServer();
