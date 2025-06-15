@@ -199,3 +199,57 @@ body {
   0%, 80%, 100% { transform: scale(0); }
   40% { transform: scale(1.0); }
 }
+/* style.css (貼在最下方) */
+
+/* --- 優化一：滾動載入動畫的樣式 --- */
+.fade-in-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* --- 優化二：精緻化的懸停效果 --- */
+
+/* 為功能卡片增加更柔和的陰影和浮動效果 */
+.feature-card {
+    /* ... 您原有的樣式保持不變，這裡只展示新增/修改的 ... */
+    transition: transform 0.4s ease, box-shadow 0.4s ease; /* 讓過渡更平滑 */
+}
+
+.feature-card:hover {
+    transform: translateY(-15px); /* 浮動更高 */
+    box-shadow: 0 20px 40px rgba(52, 73, 94, 0.15); /* 陰影更深、更廣 */
+}
+
+
+/* --- 優化三：漸層流光文字標題 --- */
+.main-title {
+    font-family: var(--heading-font);
+    font-size: 4.2rem; /* 稍微再放大一點，更有氣勢 */
+    font-weight: 700;
+    margin-bottom: 15px;
+    
+    /* 漸層文字的核心技巧 */
+    background: linear-gradient(125deg, #FFDE59, #ffffff, #89CFF0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+
+    /* 讓漸層背景動起來，產生流光效果 */
+    background-size: 200% 200%;
+    animation: gradient-flow 5s ease infinite;
+}
+
+/* 定義流光動畫 */
+@keyframes gradient-flow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}

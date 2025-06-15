@@ -145,3 +145,21 @@ async function loadItineraries() { const token = localStorage.getItem('token'); 
 async function fetchAndLoadItinerary(id) { const token = localStorage.getItem('token'); if (!token) return; try { const response = await fetch(`${API_BASE_URL}/api/itineraries/${id}`, { headers: { 'Authorization': `Bearer ${token}` } }); if (!response.ok) throw new Error('無法載入行程詳細資料'); const itinerary = await response.json(); conversationHistory = itinerary.conversation || []; const chatWindow = document.querySelector('.chat-window'); chatWindow.innerHTML = ''; conversationHistory.forEach(item => { appendMessage(item.content, item.role === 'user' ? 'user-message' : 'ai-message', chatWindow); }); document.getElementById('start-city').value = itinerary.route?.startCity || ''; document.getElementById('end-city').value = itinerary.route?.endCity || ''; if (routeLayer) { map.removeLayer(routeLayer); routeLayer = null; } showToast(`行程 "${itinerary.title}" 已成功載入！`); document.querySelector('.tab-btn[data-tab="tab-1"]').click(); } catch (error) { console.error('載入行程時發生錯誤:', error); showToast(error.message, 'error'); } }
 async function handleDeleteItinerary(id) { if (!confirm('您確定要刪除這個行程嗎？此操作無法復原。')) return; const token = localStorage.getItem('token'); if (!token) return showToast('授權失效，請重新登入。', 'error'); try { const response = await fetch(`${API_BASE_URL}/api/itineraries/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); const data = await response.json(); if (!response.ok) throw new Error(data.error || '刪除失敗'); showToast(data.message); loadItineraries(); } catch (error) { console.error('刪除行程時發生錯誤:', error); showToast(`錯誤：${error.message}`, 'error'); } }
 async function handleEditItinerary(id, currentTitle) { const newTitle = prompt("請輸入新的行程標題：", currentTitle); if (!newTitle || newTitle.trim() === "") return; const token = localStorage.getItem('token'); if (!token) return showToast('授權失效，請重新登入。', 'error'); try { const response = await fetch(`${API_BASE_URL}/api/itineraries/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ title: newTitle }) }); if (!response.ok) { const data = await response.json(); throw new Error(data.error || '更新失敗'); } showToast('行程標題已成功更新！'); loadItineraries(); } catch (error) { console.error('更新行程時發生錯誤:', error); showToast(`錯誤：${error.message}`, 'error'); } }
+// script.js (貼在最下方)
+
+// --- 滾動載入動畫 ---
+document.addEventListener('DOMContentLoaded', function() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, {
+        threshold: 0.1 // 元素進入畫面 10% 時觸發
+    });
+
+    // 選取所有想要有動畫效果的元素
+    const elementsToAnimate = document.querySelectorAll('.fade-in-on-scroll');
+    elementsToAnimate.forEach(el => observer.observe(el));
+});
