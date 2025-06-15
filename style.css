@@ -100,11 +100,23 @@ body {
 .route-inputs { display: flex; flex-direction: column; gap: 10px; } /* 確保內部元素垂直排列 */
 .route-inputs input { width: 100%; box-sizing: border-box; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; }
 #map { background: #e9ecef; border-radius: 8px; height: 250px; width: 100%; }
-.export-item { display: flex; align-items: center; gap: 15px; padding: 15px; background-color: #fff; border: 1px solid #e9ecef; border-radius: 12px; margin-top: 15px; }
+.export-item {display: flex; align-items: flex-start; /* 改為頂部對齊 */ flex-wrap: wrap; /* 允許內容換行 */ gap: 15px; /* 縮小一點間距 */ padding: 20px; background-color: #f8f9fa; border-radius: 12px; margin-top: 20px;}
 .export-icon { font-size: 2rem; }
 .export-text h4 { margin: 0 0 5px 0; font-family: var(--heading-font); }
 .export-text p { margin: 0; font-size: 0.8rem; color: #6c757d; }
-.export-btn { margin-left: auto; padding: 8px 15px; border: none; background: var(--primary-color); color: white; font-weight: bold; border-radius: 8px; cursor: pointer; transition: background-color 0.3s; white-space: nowrap; }
+.export-btn {
+    margin-left: auto;
+    padding: 8px 15px;
+    border: none;
+    background: var(--primary-color);
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+    flex-shrink: 0; /* 防止按鈕被壓縮 */
+}
 .email-input-group { display: flex; margin-top: 10px; }
 .email-input-group input { width: 100%; padding: 10px; border: 1px solid #ced4da; border-radius: 8px 0 0 8px; }
 .email-input-group button { border-radius: 0 8px 8px 0; margin-left: -1px; }
@@ -142,10 +154,12 @@ body {
 .edit-btn:hover, .delete-btn:hover { opacity: 1; }
 /* style.css */
 .date-input-group {
-    display: flex;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: auto 1fr; /* 建立兩欄：標籤自動寬度，輸入框佔滿剩餘空間 */
+    gap: 8px 10px; /* 設定行與列的間距 */
     align-items: center;
-    margin-top: 10px;
+    margin-top: 15px; /* 增加與上方文字的距離 */
+    width: 100%; /* 確保它佔滿寬度 */
 }
 .date-input-group label {
     font-size: 0.9rem;
