@@ -102,6 +102,35 @@ const oauth2Client = new google.auth.OAuth2(process.env.GOOGLE_CLIENT_ID, proces
 app.get('/api/google', (req, res) => { const scopes = ['https://www.googleapis.com/auth/calendar.events']; const authorizationUrl = oauth2Client.generateAuthUrl({ access_type: 'offline', scope: scopes, include_granted_scopes: true }); res.redirect(authorizationUrl); });
 app.get('/api/google/callback', async (req, res) => { try { const { code } = req.query; const { tokens } = await oauth2Client.getToken(code); oauth2Client.setCredentials(tokens); const calendar = google.calendar({ version: 'v3', auth: oauth2Client }); const event = { 'summary': '我的AI規劃歐洲之旅', 'description': '由 AI 智慧導遊 App 自動新增。', 'start': { 'dateTime': '2025-07-20T09:00:00-07:00', 'timeZone': 'Europe/Rome', }, 'end': { 'dateTime': '2025-07-20T17:00:00-07:00', 'timeZone': 'Europe/Rome', }, }; await calendar.events.insert({ calendarId: 'primary', resource: event, }); res.redirect('http://127.0.0.1:5500/index.html' || 'https://cheerful-choux-16e1ba.netlify.app'); } catch (error) { console.error('處理 Google Callback 時發生錯誤:', error); res.status(500).send('與 Google 授權時發生錯誤'); } });
 
+// +++++ 新增的「自我檢測」路由 +++++
+app.get('/api/self-test', async (req, res) => {
+    try {
+        console.log("執行後端自我檢測...");
+        // 組合一個指向自己的內部 URL
+        const internalUrl = `http://localhost:${port}/api/chat`;
+        console.log(`正在從後端內部呼叫: ${internalUrl}`);
+        
+        // 使用 axios 從內部發送一個請求給自己
+        const response = await axios.post(internalUrl, {
+            message: "Hello from self-test"
+        });
+
+        // 如果成功，回傳成功訊息和 AI 的部分回覆
+        res.json({
+            testStatus: "成功 (SUCCESS)",
+            message: "後端可以成功呼叫自己的 /api/chat 路由。",
+            chatResponse: response.data
+        });
+
+    } catch (error) {
+        console.error("自我檢測失敗:", error.response ? error.response.data : error.message);
+        res.status(500).json({
+            testStatus: "失敗 (FAILED)",
+            message: "後端無法呼叫自己的 /api/chat 路由。請查看後端日誌以獲取詳細錯誤。",
+            error: error.response ? error.response.data : error.message
+        });
+    }
+});
 
 // --- 啟動伺服器與資料庫連線 ---
 const startServer = async () => {
