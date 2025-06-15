@@ -12,7 +12,7 @@ const PDFDocument = require('pdfkit');
 const nodemailer = require('nodemailer');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // --- 中間件 (Middleware) ---
 app.use(cors());
