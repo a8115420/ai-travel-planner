@@ -253,3 +253,43 @@ body {
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
+/* style.css (貼在最下方) */
+
+/* --- 特色區塊中的預訂連結按鈕 --- */
+.booking-links {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.booking-links a {
+    /* 使用 Flexbox 來對齊圖示和文字 */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* 圖示和文字之間的距離 */
+
+    text-decoration: none;
+    font-weight: bold;
+    color: #fff; /* 文字顏色改為白色 */
+    background: var(--primary-color); /* 使用更醒目的主色 */
+    padding: 12px 24px; /* 加大一點 padding */
+    border-radius: 8px; /* 改為小圓角，更現代 */
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 169, 255, 0.2); /* 加上陰影 */
+    border: none;
+}
+
+.booking-links a:hover {
+    background: #0089d1; /* 滑鼠懸停時加深顏色 */
+    color: white;
+    transform: translateY(-3px) scale(1.05); /* 讓按鈕浮起來並稍微放大 */
+    box-shadow: 0 6px 20px rgba(0, 169, 255, 0.3); /* 陰影更明顯 */
+}
+
+/* 調整按鈕內的 SVG 圖示樣式 */
+.booking-links a svg {
+    width: 18px;
+    height: 18px;
+}
