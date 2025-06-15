@@ -5,21 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>導遊智慧行程規劃系統</title>
     
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-    
     <link rel="stylesheet" href="style.css">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Poppins:wght@700&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 </head>
 <body>
 
     <div class="app-layout">
-
         <div class="main-content">
-
             <header class="hero">
                 <div class="auth-buttons">
                     <button id="register-btn">註冊</button>
@@ -29,60 +25,28 @@
                         <button id="logout-btn">登出</button>
                     </div>
                 </div>
-
                 <div class="hero-content">
                     <h1 class="main-title">導遊智慧行程規劃系統</h1>
                     <p class="subtitle">結合AI導遊與數位整合技術，讓你的歐洲自駕遊，從未如此輕鬆。</p>
-                    <a href="#planner" class="cta-button">立即開始規劃</a>
                 </div>
             </header>
-
             <main id="features" class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg width="90px" height="90px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.884 10.3237C16.5341 10.0195 16.0232 10.0469 15.719 10.3968C15.4148 10.7467 15.4422 11.2575 15.7921 11.5617L16.884 10.3237ZM19.25 12.0002C19.25 12.4144 19.5858 12.7502 20 12.7502C20.4142 12.7502 20.75 12.4144 20.75 12.0002H19.25ZM8.20789 11.5617C8.55779 11.2575 8.58521 10.7467 8.28101 10.3968C7.97681 10.0469 7.46593 10.0195 7.11604 10.3237L8.20789 11.5617ZM3.25 12.0002C3.25 12.4144 3.58579 12.7502 4 12.7502C4.41421 12.7502 4.75 12.4144 4.75 12.0002H3.25ZM15.7921 11.5617C16.8927 12.4842 18.0645 13.0002 19.25 13.0002V11.5002C18.3976 11.5002 17.5163 11.1311 16.884 10.3237L15.7921 11.5617ZM20.75 12.0002C20.75 6.61522 15.8848 2.25024 10 2.25024V3.75024C15.0711 3.75024 19.25 7.42918 19.25 12.0002H20.75ZM10 2.25024C4.11522 2.25024 -0.75 6.61522 -0.75 12.0002H0.75C0.75 7.42918 4.92893 3.75024 10 3.75024V2.25024ZM-0.75 12.0002V16.0002H0.75V12.0002H-0.75ZM4.75 12.0002C4.75 7.42918 8.92893 3.75024 14 3.75024V2.25024C8.11522 2.25024 3.25 6.61522 3.25 12.0002H4.75ZM8.20789 11.5617C7.10731 12.4842 5.93551 13.0002 4.75 13.0002V11.5002C5.60237 11.5002 6.48373 11.1311 7.11604 10.3237L8.20789 11.5617ZM1.25 20.0002V16.0002H-0.25V20.0002H1.25ZM1.25 16.0002C1.25 14.7576 2.25736 13.7502 3.5 13.7502H3.5C4.74264 13.7502 5.75 14.7576 5.75 16.0002V20.0002H7.25V16.0002C7.25 13.9292 5.57081 12.2502 3.5 12.2502H3.5C1.42919 12.2502 -0.25 13.9292 -0.25 16.0002V20.0002H1.25Z" fill="#00A9FF"/></svg>
-                    </div>
-                    <h2>AI 導遊・對話式規劃</h2>
-                    <p>與我們的導遊機器人聊天，就像和真人對話一樣。告訴它你的想法，它就能為你快速建立專屬的歐洲自駕行程。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg width="90px" height="90px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 21H9C6.23858 21 4 18.7614 4 16V9C4 6.23858 6.23858 4 9 4H15C17.7614 4 20 6.23858 20 9V16C20 18.7614 17.7614 21 15 21Z" stroke="#00A9FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.5 4.5V2M8.5 4.5V2" stroke="#00A9FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.5 10H19.5" stroke="#00A9FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 14.5L11 16L14.5 12.5" stroke="#FF5733" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </div>
-                    <h2>一鍵整合・無縫接軌</h2>
-                    <p>從租車、住宿、景點票券到 Google 行事曆同步，所有繁瑣的預訂工作，只需一鍵即可完成，告別切換無數分頁的煩惱。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg width="90px" height="90px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 12.5C13.3807 12.5 14.5 11.3807 14.5 10C14.5 8.61929 13.3807 7.5 12 7.5C10.6193 7.5 9.5 8.61929 9.5 10C9.5 11.3807 10.6193 12.5 12 12.5Z" stroke="#00A9FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 22C17 17 20 13.4183 20 10C20 6.68629 16.4183 4 12 4C7.58172 4 4 6.68629 4 10C4 13.4183 7 17 12 22Z" stroke="#00A9FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 2V2.5" stroke="#FF5733" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 21.5V22" stroke="#00A9FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 10H4.5" stroke="#00A9FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19.5 10H20" stroke="#00A9FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.75702 6.24298L7.40349 5.88945" stroke="#FF5733" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.5962 14.1038L16.2426 13.7498" stroke="#00A9FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.75702 13.757L7.40349 14.1105" stroke="#00A9FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.5962 5.89624L16.2426 6.25024" stroke="#FF5733" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </div>
-                    <h2>離線地圖・客製手冊</h2>
-                    <p>即使在沒有網路的鄉間小路，也能依靠離線地圖安心駕駛。專屬的數位旅遊手冊，讓所有行程資訊盡在掌握。</p>
-                </div>
+                 <div class="feature-card"> <div class="feature-icon"> <svg width="90px" height="90px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.884 10.3237C16.5341 10.0195 16.0232 10.0469 15.719 10.3968C15.4148 10.7467 15.4422 11.2575 15.7921 11.5617L16.884 10.3237ZM19.25 12.0002C19.25 12.4144 19.5858 12.7502 20 12.7502C20.4142 12.7502 20.75 12.4144 20.75 12.0002H19.25ZM8.20789 11.5617C8.55779 11.2575 8.58521 10.7467 8.28101 10.3968C7.97681 10.0469 7.46593 10.0195 7.11604 10.3237L8.20789 11.5617ZM3.25 12.0002C3.25 12.4144 3.58579 12.7502 4 12.7502C4.41421 12.7502 4.75 12.4144 4.75 12.0002H3.25ZM15.7921 11.5617C16.8927 12.4842 18.0645 13.0002 19.25 13.0002V11.5002C18.3976 11.5002 17.5163 11.1311 16.884 10.3237L15.7921 11.5617ZM20.75 12.0002C20.75 6.61522 15.8848 2.25024 10 2.25024V3.75024C15.0711 3.75024 19.25 7.42918 19.25 12.0002H20.75ZM10 2.25024C4.11522 2.25024 -0.75 6.61522 -0.75 12.0002H0.75C0.75 7.42918 4.92893 3.75024 10 3.75024V2.25024ZM-0.75 12.0002V16.0002H0.75V12.0002H-0.75ZM4.75 12.0002C4.75 7.42918 8.92893 3.75024 14 3.75024V2.25024C8.11522 2.25024 3.25 6.61522 3.25 12.0002H4.75ZM8.20789 11.5617C7.10731 12.4842 5.93551 13.0002 4.75 13.0002V11.5002C5.60237 11.5002 6.48373 11.1311 7.11604 10.3237L8.20789 11.5617ZM1.25 20.0002V16.0002H-0.25V20.0002H1.25ZM1.25 16.0002C1.25 14.7576 2.25736 13.7502 3.5 13.7502H3.5C4.74264 13.7502 5.75 14.7576 5.75 16.0002V20.0002H7.25V16.0002C7.25 13.9292 5.57081 12.2502 3.5 12.2502H3.5C1.42919 12.2502 -0.25 13.9292 -0.25 16.0002V20.0002H1.25Z" fill="#00A9FF"/></svg> </div> <h2>AI 導遊・對話式規劃</h2> <p>與我們的導遊機器人聊天，就像和真人對話一樣。告訴它你的想法，它就能為你快速建立專屬的歐洲自駕行程。</p> </div> <div class="feature-card"> <div class="feature-icon"> <svg width="90px" height="90px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 21H9C6.23858 21 4 18.7614 4 16V9C4 6.23858 6.23858 4 9 4H15C17.7614 4 20 6.23858 20 9V16C20 18.7614 17.7614 21 15 21Z" stroke="#00A9FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.5 4.5V2M8.5 4.5V2" stroke="#00A9FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.5 10H19.5" stroke="#00A9FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 14.5L11 16L14.5 12.5" stroke="#FF5733" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> </div> <h2>一鍵整合・無縫接軌</h2> <p>從租車、住宿、景點票券到 Google 行事曆同步，所有繁瑣的預訂工作，只需一鍵即可完成，告別切換無數分頁的煩惱。</p> </div> <div class="feature-card"> <div class="feature-icon"> <svg width="90px" height="90px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 12.5C13.3807 12.5 14.5 11.3807 14.5 10C14.5 8.61929 13.3807 7.5 12 7.5C10.6193 7.5 9.5 8.61929 9.5 10C9.5 11.3807 10.6193 12.5 12 12.5Z" stroke="#00A9FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 22C17 17 20 13.4183 20 10C20 6.68629 16.4183 4 12 4C7.58172 4 4 6.68629 4 10C4 13.4183 7 17 12 22Z" stroke="#00A9FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 2V2.5" stroke="#FF5733" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 21.5V22" stroke="#00A9FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 10H4.5" stroke="#00A9FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19.5 10H20" stroke="#00A9FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.75702 6.24298L7.40349 5.88945" stroke="#FF5733" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.5962 14.1038L16.2426 13.7498" stroke="#00A9FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.75702 13.757L7.40349 14.1105" stroke="#00A9FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.5962 5.89624L16.2426 6.25024" stroke="#FF5733" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> </div> <h2>離線地圖・客製手冊</h2> <p>即使在沒有網路的鄉間小路，也能依靠離線地圖安心駕駛。專屬的數位旅遊手冊，讓所有行程資訊盡在掌握。</p> </div>
             </main>
-
             <section class="gallery">
-                <h2>探索歐洲絕美景點</h2>
-                <div class="gallery-container">
-                    <img src="https://images.pexels.com/photos/532826/pexels-photo-532826.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="巴黎鐵塔">
-                    <img src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=1396&auto=format&fit=crop" alt="羅馬競技場">
-                    <img src="https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?q=80&w=1366&auto=format&fit=crop" alt="威尼斯運河">
-                </div>
+                 <h2>探索歐洲絕美景點</h2>
+                <div class="gallery-container"> <img src="https://images.unsplash.com/photo-1502602898657-3e91760c0337?q=80&w=1470&auto=format&fit=crop" alt="巴黎鐵塔"> <img src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=1396&auto=format&fit=crop" alt="羅馬競技場"> <img src="https://images.unsplash.com/photo-1534417642533-5b0b1a036989?q=80&w=1470&auto=format&fit=crop" alt="瑞士山脈"> <img src="https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?q=80&w=1366&auto=format&fit=crop" alt="威尼斯運河"> </div>
             </section>
+            <footer class="footer"> <p>&copy; 2025 導遊智慧行程規劃系統. All Rights Reserved.</p> </footer>
+        </div>
 
-            <footer class="footer">
-                <p>&copy; 2025 導遊智慧行程規劃系統. All Rights Reserved.</p>
-            </footer>
-
-        </div> <aside class="planner-sidebar">
+        <aside class="planner-sidebar">
             <section id="planner" class="planner-section">
                 <h2 class="planner-title">打造你的專屬行程</h2>
-
                 <div id="save-form-container" class="save-itinerary-form hidden">
                     <input type="text" id="itinerary-title" placeholder="為這趟旅程取個名字吧！">
                     <button id="save-itinerary-btn">儲存目前行程</button>
                 </div>
-                
                 <div class="planner-container">
                     <div class="tab-buttons">
                         <button class="tab-btn active" data-tab="tab-1">Step 1: AI 智慧規劃</button>
@@ -90,38 +54,33 @@
                         <button class="tab-btn" data-tab="tab-3">Step 3: 匯出與同步</button>
                         <button id="my-itineraries-tab-btn" class="tab-btn hidden" data-tab="tab-4">我的行程</button>
                     </div>
-
                     <div class="tab-content">
                         <div id="tab-1" class="tab-pane active">
-                             <h3>與 AI 導遊對話</h3>
-                            <p>告訴我你的旅遊偏好，例如：想去幾天？喜歡自然風景還是城市觀光？預算多少？</p>
-                            <div class="chat-window">
-                                <div class="message ai-message">你好！我是你的 AI 導遊，準備好規劃一趟完美的歐洲之旅了嗎？</div>
-                            </div>
-                            <div class="chat-input-area">
-                                <input type="text" placeholder="在這裡輸入你的需求...">
-                                <button>傳送</button>
-                            </div>
+                            <h3>與 AI 導遊對話</h3>
+                            <p>告訴我你的旅遊偏好...</p>
+                            <div class="chat-window"><div class="message ai-message">你好！我是你的 AI 導遊...</div></div>
+                            <div class="chat-input-area"><input type="text" placeholder="在這裡輸入你的需求..."><button>傳送</button></div>
                         </div>
-
                         <div id="tab-2" class="tab-pane">
-                            <div class="route-planner">
-                                <div class="route-inputs">
-                                    <h3>自駕路線與景點推薦</h3>
-                                    <p>請輸入起點與終點，我們將為您規劃最佳路線。</p>
-                                    <label for="start-city">起點：</label>
-                                    <input type="text" id="start-city" placeholder="例如：羅馬">
-                                    <label for="end-city">終點：</label>
-                                    <input type="text" id="end-city" placeholder="例如：佛羅倫斯">
-                                    <button id="plan-route-btn">規劃路線</button>
-                                </div>
-                                <div id="map"></div>
-                            </div>
+                             <div class="route-planner"> <div class="route-inputs"> <h3>自駕路線與景點推薦</h3> <p>請輸入起點與終點...</p> <label for="start-city">起點：</label> <input type="text" id="start-city" placeholder="例如：羅馬"> <label for="end-city">終點：</label> <input type="text" id="end-city" placeholder="例如：佛羅倫斯"> <button id="plan-route-btn">規劃路線</button> </div> <div id="map"></div> </div>
                         </div>
-
                         <div id="tab-3" class="tab-pane">
-                             <h3>匯出行程，輕鬆帶著走</h3>
+                            <h3>匯出行程，輕鬆帶著走</h3>
                             <p>完成規劃後，選擇您喜歡的方式來保存這趟完美的旅程。</p>
+                            <div class="export-item">
+                                <div class="export-icon">📅</div>
+                                <div class="export-text">
+                                    <h4>同步至 Google 日曆</h4>
+                                    <p>選擇行程的起訖日期，我們會為您建立一個全天活動。</p>
+                                    <div class="date-input-group">
+                                        <label for="start-date">開始日期:</label>
+                                        <input type="date" id="start-date">
+                                        <label for="end-date">結束日期:</label>
+                                        <input type="date" id="end-date">
+                                    </div>
+                                </div>
+                                <button id="sync-google-btn" class="export-btn">立即同步</button>
+                            </div>
                             <div class="export-item">
                                 <div class="export-icon">📧</div>
                                 <div class="export-text">
@@ -134,47 +93,25 @@
                                 </div>
                             </div>
                         </div>
-                        
                         <div id="tab-4" class="tab-pane">
                             <h3>我已儲存的行程</h3>
-                            <ul id="itinerary-list" class="itinerary-list">
-                                <p>目前沒有已儲存的行程。</p>
-                            </ul>
+                            <ul id="itinerary-list" class="itinerary-list"><p>目前沒有已儲存的行程。</p></ul>
                         </div>
                     </div>
                 </div>
             </section>
-        </aside> </div><div id="register-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <button class="close-btn">&times;</button>
-            <h2>註冊新帳號</h2>
-            <form id="register-form">
-                <label for="register-email">Email</label>
-                <input type="email" id="register-email" required>
-                <label for="register-password">密碼</label>
-                <input type="password" id="register-password" required>
-                <button type="submit">註冊</button>
-            </form>
-        </div>
+        </aside>
     </div>
 
+    <div id="register-modal" class="modal-overlay hidden">
+         <div class="modal-content"> <button class="close-btn">&times;</button> <h2>註冊新帳號</h2> <form id="register-form"> <label for="register-email">Email</label> <input type="email" id="register-email" required> <label for="register-password">密碼</label> <input type="password" id="register-password" required> <button type="submit">註冊</button> </form> </div>
+    </div>
     <div id="login-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <button class="close-btn">&times;</button>
-            <h2>會員登入</h2>
-            <form id="login-form">
-                <label for="login-email">Email</label>
-                <input type="email" id="login-email" required>
-                <label for="login-password">密碼</label>
-                <input type="password" id="login-password" required>
-                <button type="submit">登入</button>
-            </form>
-        </div>
+         <div class="modal-content"> <button class="close-btn">&times;</button> <h2>會員登入</h2> <form id="login-form"> <label for="login-email">Email</label> <input type="email" id="login-email" required> <label for="login-password">密碼</label> <input type="password" id="login-password" required> <button type="submit">登入</button> </form> </div>
     </div>
 
-
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="script.js"></script>
 
 </body>
