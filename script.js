@@ -90,7 +90,53 @@ function initMap() { if (map) return; try { map = L.map('map').setView([48.8566,
 async function handleRegisterSubmit(event) { event.preventDefault(); const email = document.getElementById('register-email').value; const password = document.getElementById('register-password').value; try { const response = await fetch(`${API_BASE_URL}/api/auth/register`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) }); const data = await response.json(); if (!response.ok) throw new Error(data.error || '註冊失敗'); showToast('註冊成功！現在您可以使用這組帳號密碼登入。'); closeModal('register-modal'); } catch (error) { showToast(`註冊失敗：${error.message}`, 'error'); } }
 async function handleLoginSubmit(event) { event.preventDefault(); const email = document.getElementById('login-email').value; const password = document.getElementById('login-password').value; try { const response = await fetch(`${API_BASE_URL}/api/auth/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) }); const data = await response.json(); if (!response.ok) throw new Error(data.error || '登入失敗'); localStorage.setItem('token', data.token); showToast('登入成功！'); closeModal('login-modal'); updateAuthUI(); } catch (error) { showToast(`登入失敗：${error.message}`, 'error'); } }
 function handleLogout() { localStorage.removeItem('token'); showToast('您已成功登出。'); updateAuthUI(); }
-async function handleSendMessage() { const chatInput = document.querySelector('.chat-input-area input'); const chatWindow = document.querySelector('.chat-window'); const userMessage = chatInput.value; if (!userMessage.trim()) return; appendMessage(userMessage, 'user-message', chatWindow); conversationHistory.push({ role: 'user', content: userMessage }); chatInput.value = ''; try { const response = await fetch(`${API_BASE_URL}/api/chat`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: userMessage }), }); if (!response.ok) { const errorData = await response.json().catch(() => ({ error: '無法解析錯誤訊息' })); throw new Error(errorData.error || 'Network response was not ok'); } const data = await response.json(); appendMessage(data.reply, 'ai-message', chatWindow); conversationHistory.push({ role: 'ai', content: data.reply }); } catch (error) { console.error('Fetch error:', error); appendMessage(`與 AI 連線時發生錯誤... (${error.message})`, 'ai-message', chatWindow); } }
+// script.js
+
+async function handleSendMessage() {
+    const chatInput = document.querySelector('.chat-input-area input');
+    const chatWindow = document.querySelector('.chat-window');
+    const userMessage = chatInput.value;
+    if (!userMessage.trim()) return;
+
+    // 顯示並儲存使用者訊息
+    appendMessage(userMessage, 'user-message', chatWindow);
+    conversationHistory.push({ role: 'user', content: userMessage });
+    chatInput.value = '';
+
+    // --- 新增：顯示讀取中動畫 ---
+    const loadingBubble = document.createElement('div');
+    loadingBubble.className = 'loading-bubble';
+    loadingBubble.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+    chatWindow.appendChild(loadingBubble);
+    chatWindow.scrollTop = chatWindow.scrollHeight; // 捲動到底部
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/chat`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: userMessage }),
+        });
+        
+        // --- 修改：在處理回應前，先移除讀取中動畫 ---
+        loadingBubble.remove();
+        
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ error: '無法解析錯誤訊息' }));
+            throw new Error(errorData.error || 'Network response was not ok');
+        }
+        const data = await response.json();
+        
+        // 顯示並儲存 AI 回覆
+        appendMessage(data.reply, 'ai-message', chatWindow);
+        conversationHistory.push({ role: 'ai', content: data.reply });
+
+    } catch (error) {
+        console.error('Fetch error:', error);
+        // --- 修改：在顯示錯誤前，也要移除讀取中動畫 ---
+        loadingBubble.remove();
+        appendMessage(`與 AI 連線時發生錯誤... (${error.message})`, 'ai-message', chatWindow);
+    }
+}
 function appendMessage(text, className, window) { const messageElem = document.createElement('div'); messageElem.className = `message ${className}`; messageElem.textContent = text; window.appendChild(messageElem); window.scrollTop = window.scrollHeight; }
 async function planRoute() { const startInput = document.getElementById('start-city'); const endInput = document.getElementById('end-city'); const planBtn = document.getElementById('plan-route-btn'); const startCity = startInput.value; const endCity = endInput.value; if (!startCity || !endCity) return showToast('請輸入起點和終點！', 'error'); planBtn.textContent = '規劃中...'; planBtn.disabled = true; try { const response = await fetch(`${API_BASE_URL}/api/route`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ startCity, endCity }), }); const data = await response.json(); if (!response.ok) throw new Error(data.error || '路線規劃失敗'); if (routeLayer) map.removeLayer(routeLayer); routeLayer = L.geoJSON(data.route, { style: { color: '#00A9FF', weight: 5, opacity: 0.8 } }).addTo(map); map.fitBounds(routeLayer.getBounds()); } catch (error) { console.error('規劃路線時發生錯誤:', error); showToast(`發生錯誤：${error.message}`, 'error'); } finally { planBtn.textContent = '規劃路線'; planBtn.disabled = false; } }
 async function sendPdf() { const emailInput = document.getElementById('user-email'); const sendBtn = document.getElementById('send-pdf-btn'); const email = emailInput.value; if (!email || !email.includes('@')) return showToast('請輸入有效的 Email 地址！', 'error'); if (conversationHistory.length === 0) return showToast('請先與 AI 對話以產生行程！', 'error'); sendBtn.textContent = '寄送中...'; sendBtn.disabled = true; try { const response = await fetch(`${API_BASE_URL}/api/export/email`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: email, history: conversationHistory }), }); const data = await response.json(); if (!response.ok) throw new Error(data.error || '寄送失敗'); showToast(data.message); } catch (error) { console.error('寄送 PDF 時發生錯誤:', error); showToast(`發生錯誤：${error.message}`, 'error'); } finally { sendBtn.textContent = '寄送到信箱'; sendBtn.disabled = false; } }
