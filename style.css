@@ -140,3 +140,18 @@ body {
 .edit-btn { background: #007bff; }
 .delete-btn { background: #ff4d4d; }
 .edit-btn:hover, .delete-btn:hover { opacity: 1; }
+/* style.css */
+.date-input-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+}
+.date-input-group label {
+    font-size: 0.9rem;
+}
+.date-input-group input[type="date"] {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+}

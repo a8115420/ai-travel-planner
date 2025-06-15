@@ -31,6 +31,50 @@ function setupEventListeners() {
     document.getElementById('sync-google-btn')?.addEventListener('click', () => { window.location.href = `${API_BASE_URL}/api/google`; });
 }
 
+// 新增一個處理 Google 同步的函式
+async function handleGoogleSync() {
+    // 首先，需要知道使用者正在看哪個行程。我們可以要求使用者先載入一個行程。
+    // 這裡我們用一個簡化的方式，假設使用者要同步的是列表中的第一個行程。
+    // 一個更佳的作法是讓使用者在點擊列表項目時，設定一個"當前選定"的行程ID。
+    const firstItineraryItem = document.querySelector('#itinerary-list li');
+    if (!firstItineraryItem) {
+        return showToast('請先儲存並選定一個行程來進行同步。', 'error');
+    }
+    const itineraryId = firstItineraryItem.dataset.id;
+    
+    const startDate = document.getElementById('start-date').value;
+    const endDate = document.getElementById('end-date').value;
+    const token = localStorage.getItem('token');
+
+    if (!startDate || !endDate) {
+        return showToast('請選擇行程的開始與結束日期！', 'error');
+    }
+    if (new Date(startDate) > new Date(endDate)) {
+        return showToast('結束日期不能早於開始日期！', 'error');
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/google/prepare-sync`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ itineraryId, startDate, endDate })
+        });
+        
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || '準備同步時發生錯誤');
+
+        // 收到後端給的授權 URL 後，再進行跳轉
+        window.location.href = data.authorizationUrl;
+
+    } catch (error) {
+        console.error('Google Sync Error:', error);
+        showToast(error.message, 'error');
+    }
+}
+
 // --- UI 控制函式 ---
 function openModal(modalId) { document.getElementById(modalId)?.classList.remove('hidden'); }
 function closeModal(modalId) { document.getElementById(modalId)?.classList.add('hidden'); }

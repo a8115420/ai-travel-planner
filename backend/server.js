@@ -26,6 +26,22 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
+// backend/server.js
+const session = require('express-session'); // 在檔案頂部引入
+
+// ...
+app.use(bodyParser.json());
+
+// 新增：設定 session 中介軟體
+app.use(session({
+    secret: process.env.JWT_SECRET, // 直接沿用 JWT 的私鑰即可
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false } // 在本地開發設為 false，未來部署HTTPS時可設為 true
+}));
+
+// ... 後續程式碼
+
 // 初始化 OpenAI
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
