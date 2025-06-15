@@ -1,0 +1,13 @@
+OPENAI_API_KEY="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"
+
+# 新增郵件服務的設定
+EMAIL_USER="a8115420@gmail.com"  # 換成 Gmail 信箱
+EMAIL_PASS=sywt bczd jgae enqz     #  16 位元應用程式密碼
+
+MONGO_URI="mongodb+srv://plannerUser:Bd0kFQFADMoSFsll@cluster0.gya55dk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+
+JWT_SECRET="ThisIsMySuperSecretKeyForTravelPlannerApp2025orange952708"
+
+GOOGLE_CLIENT_ID="896294113452-2fg4pcrtd2ribeeclon68tmlbtbm17qi.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET="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"
+GOOGLE_REDIRECT_URI="http://localhost:3000/api/google/callback"
