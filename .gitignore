@@ -1,8 +1,9 @@
 # 專案依賴 (Dependencies)
-/backend/node_modules
+/backend/node_modules/
 
-# 環境變數檔案 (Environment variables)
-/backend/.env
+# 環境變數檔案 (Environment variables) - 忽略所有 .env 相關檔案
+*.env
+/backend/.env*
 
 # 作業系統產生的暫存檔
 .DS_Store

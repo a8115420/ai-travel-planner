@@ -1,6 +1,6 @@
-// script.js (最頂部)
-const API_BASE_URL = 'https://ai-travel-planner-api.onrender.com'; // <--- 請換成您後端的真實 Render 網址
-// script.js (UI/UX 優化版 - 整合 Toastify.js)
+// script.js (部署修正最終版)
+
+const API_BASE_URL = 'https://ai-travel-planner-api.onrender.com'; // 請再次確認這是您後端的 Render 網址
 
 // --- 全域變數 ---
 let map = null;
@@ -28,6 +28,7 @@ function setupEventListeners() {
     document.querySelector('.chat-input-area input')?.addEventListener('keypress', e => { if (e.key === 'Enter') handleSendMessage(); });
     document.getElementById('plan-route-btn')?.addEventListener('click', planRoute);
     document.getElementById('send-pdf-btn')?.addEventListener('click', sendPdf);
+    document.getElementById('sync-google-btn')?.addEventListener('click', () => { window.location.href = `${API_BASE_URL}/api/google`; });
 }
 
 // --- UI 控制函式 ---
@@ -70,9 +71,22 @@ function handleTabClick() {
     panes.forEach(p => p.classList.remove('active'));
     this.classList.add('active');
     const targetPane = document.getElementById(this.dataset.tab);
-    if (targetPane) targetPane.classList.add('active');
-    if (this.dataset.tab === 'tab-2') { setTimeout(() => { if (map) map.invalidateSize(); }, 10); }
-    if (this.dataset.tab === 'tab-4') { loadItineraries(); }
+    if (targetPane) {
+        targetPane.classList.add('active');
+    }
+    if (this.dataset.tab === 'tab-2') {
+        setTimeout(() => {
+            if (!map) {
+                initMap();
+            }
+            if (map) {
+                map.invalidateSize();
+            }
+        }, 10);
+    }
+    if (this.dataset.tab === 'tab-4') {
+        loadItineraries();
+    }
 }
 
 function handleItineraryListClick(event) {
@@ -109,7 +123,7 @@ async function handleRegisterSubmit(event) {
     const email = document.getElementById('register-email').value;
     const password = document.getElementById('register-password').value;
     try {
-        const response = await fetch('${API_BASE_URL}/api/auth/register', {
+        const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
@@ -128,7 +142,7 @@ async function handleLoginSubmit(event) {
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
     try {
-        const response = await fetch('${API_BASE_URL}/api/auth/login', {
+        const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
@@ -159,7 +173,7 @@ async function handleSendMessage() {
     conversationHistory.push({ role: 'user', content: userMessage });
     chatInput.value = '';
     try {
-        const response = await fetch('${API_BASE_URL}/api/chat', {
+        const response = await fetch(`${API_BASE_URL}/api/chat`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ message: userMessage }),
@@ -195,7 +209,7 @@ async function planRoute() {
     planBtn.textContent = '規劃中...';
     planBtn.disabled = true;
     try {
-        const response = await fetch('${API_BASE_URL}/api/route', {
+        const response = await fetch(`${API_BASE_URL}/api/route`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ startCity, endCity }),
@@ -223,7 +237,7 @@ async function sendPdf() {
     sendBtn.textContent = '寄送中...';
     sendBtn.disabled = true;
     try {
-        const response = await fetch('${API_BASE_URL}/api/export/email', {
+        const response = await fetch(`${API_BASE_URL}/api/export/email`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: email, history: conversationHistory }),
@@ -252,7 +266,7 @@ async function saveItinerary() {
         route: { startCity: document.getElementById('start-city').value, endCity: document.getElementById('end-city').value, }
     };
     try {
-        const response = await fetch('${API_BASE_URL}/api/itineraries', {
+        const response = await fetch(`${API_BASE_URL}/api/itineraries`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
             body: JSON.stringify(itineraryData)
@@ -276,7 +290,7 @@ async function loadItineraries() {
     if (!token) return;
     listElement.innerHTML = '<p>讀取中...</p>';
     try {
-        const response = await fetch('${API_BASE_URL}/api/itineraries', {
+        const response = await fetch(`${API_BASE_URL}/api/itineraries`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         if (!response.ok) throw new Error('讀取行程失敗');
