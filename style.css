@@ -35,8 +35,6 @@ body {
     margin: 0;
     line-height: 1.7;
 }
-
-/* --- 動畫效果 --- */
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
 .fade-in-on-scroll {
@@ -93,31 +91,31 @@ body {
 .hidden { display: none !important; }
 
 /* --- 功能介紹區 --- */
-.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; padding: 80px 5%; }
+.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; padding: 60px 20px; }
 .feature-card { background-color: white; border: none; border-radius: 20px; padding: 40px; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); transition: transform 0.4s ease, box-shadow 0.4s ease; }
 .feature-card:hover { transform: translateY(-15px); box-shadow: 0 20px 40px rgba(52, 73, 94, 0.15); }
 .feature-icon { width: 90px; height: 90px; margin-bottom: 25px; object-fit: contain; }
 .feature-card h2 { font-family: var(--heading-font); color: var(--primary-color); font-size: 1.7rem; margin-bottom: 15px; }
 
-.booking-links { margin-top: 20px; display: flex; justify-content: center; gap: 15px; }
+.booking-links { margin-top: 20px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
 .booking-links a { display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; font-weight: bold; color: #fff; background: var(--primary-color); padding: 12px 24px; border-radius: 8px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 169, 255, 0.2); border: none; }
 .booking-links a:hover { background: #0089d1; color: white; transform: translateY(-3px) scale(1.05); box-shadow: 0 6px 20px rgba(0, 169, 255, 0.3); }
 .booking-links a svg { width: 18px; height: 18px; }
 
 /* --- 景點照片區 --- */
-.gallery { text-align: center; padding: 60px 5%; background-color: #f7fafd; }
+.gallery { text-align: center; padding: 60px 20px; background-color: #f7fafd; border-radius: 20px; }
 .gallery h2 { font-family: var(--heading-font); font-size: 2.8rem; color: var(--text-color); margin-bottom: 50px; }
-.gallery-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+.gallery-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
 .gallery-container img { width: 100%; height: 250px; object-fit: cover; border-radius: 16px; box-shadow: 0 8px 16px rgba(0,0,0,0.1); transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s; }
 .gallery-container img:hover { transform: translateY(-10px) scale(1.03); box-shadow: 0 16px 32px rgba(0,0,0,0.15); }
 
 /* --- 頁腳 --- */
-.footer { background-color: #34495E; color: white; text-align: center; padding: 30px; font-size: 0.9rem; border-radius: 0 0 20px 20px; }
+.footer { background-color: #34495E; color: white; text-align: center; padding: 30px; font-size: 0.9rem; }
 
 /* --- 行程規劃儀表板 --- */
 .planner-section { background: #f7fafd; border-radius: 20px; overflow: hidden; }
 .planner-title { font-family: var(--heading-font); text-align: center; font-size: 1.8rem; color: var(--text-color); margin-bottom: 20px; padding: 20px 20px 0 20px;}
-.save-itinerary-form { margin: 0 0 20px 0; display: flex; gap: 10px; }
+.save-itinerary-form { margin: 0 20px 20px 20px; display: flex; gap: 10px; }
 .save-itinerary-form input { flex-grow: 1; border: 2px solid var(--primary-color); padding: 10px 15px; border-radius: 8px; font-size: 1rem; }
 .save-itinerary-form button { border: none; background-color: var(--accent-color); color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; white-space: nowrap; }
 
@@ -134,7 +132,7 @@ body {
 
 /* --- 頁籤內容樣式 --- */
 .chat-window { height: 350px; border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; margin-bottom: 15px; overflow-y: auto; background: #fff; }
-.message { padding: 8px 12px; border-radius: 15px; margin-bottom: 10px; max-width: 80%; line-height: 1.5; }
+.message { padding: 8px 12px; border-radius: 15px; margin-bottom: 10px; max-width: 80%; line-height: 1.5; word-wrap: break-word; }
 .ai-message { background-color: #e9ecef; border-bottom-left-radius: 0; float: left; clear: both; }
 .user-message { background-color: var(--primary-color); color: white; border-bottom-right-radius: 0; float: right; clear: both; }
 .loading-bubble { display: flex; align-items: center; padding: 10px 15px; background-color: #e9ecef; border-radius: 15px; border-bottom-left-radius: 0; float: left; clear: both; margin-bottom: 10px; }
@@ -151,7 +149,7 @@ body {
 #map { background: #e9ecef; border-radius: 8px; height: 250px; width: 100%; }
 
 .export-item { display: flex; align-items: flex-start; flex-wrap: wrap; gap: 15px; padding: 20px; background-color: #f8f9fa; border-radius: 12px; margin-top: 20px; }
-.export-icon { font-size: 2.5rem; margin-right: 5px; }
+.export-icon { font-size: 2.5rem; margin-right: 5px; line-height: 1; }
 .export-text { flex-grow: 1; }
 .export-text h4 { margin: 0 0 5px 0; font-family: var(--heading-font); }
 .export-text p { margin: 0; font-size: 0.9rem; color: #6c757d; }
@@ -181,9 +179,8 @@ body {
 .modal-content { background: white; padding: 30px 40px; border-radius: 15px; width: 100%; max-width: 400px; position: relative; box-shadow: 0 5px 25px rgba(0,0,0,0.2); transform: translateY(-20px); transition: transform 0.3s; }
 .modal-overlay:not(.hidden) .modal-content { transform: translateY(0); }
 .close-btn { position: absolute; top: 10px; right: 15px; background: transparent; border: none; font-size: 2rem; color: #aaa; cursor: pointer; line-height: 1; }
-.modal-content h2 { margin-top: 0; margin-bottom: 25px; text-align: center; font-family: var(--heading-font); color: var(--text-color); }
+.modal-content h2, .modal-content label, .modal-content input, .modal-content button { font-family: var(--body-font); }
 .modal-content form { display: flex; flex-direction: column; gap: 15px; }
-.modal-content label { font-weight: bold; font-size: 0.9rem; color: #555; }
 .modal-content input { padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
 .modal-content input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 2px rgba(0, 169, 255, 0.2); }
 .modal-content button[type="submit"] { padding: 12px; border: none; border-radius: 8px; background: var(--primary-color); color: white; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 10px; transition: background-color 0.2s; }
