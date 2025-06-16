@@ -1,10 +1,10 @@
-// backend/routes/google.js (優化版)
+// backend/routes/google.js (最終優化版)
 
 const express = require('express');
 const router = express.Router();
 const { google } = require('googleapis');
-const Itinerary = require('../models/Itinerary'); // 引入行程模型
-const authMiddleware = require('../middleware/auth'); // 引入我們的 auth 中間件
+const Itinerary = require('../models/Itinerary');
+const authMiddleware = require('../middleware/auth');
 
 const oauth2Client = new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
@@ -12,28 +12,21 @@ const oauth2Client = new google.auth.OAuth2(
     process.env.GOOGLE_REDIRECT_URI
 );
 
-// --- API 1: 準備行程資料並產生授權 URL ---
-// 前端會先呼叫這個 API
+// API 1: 準備行程資料並產生授權 URL
 router.post('/prepare-sync', authMiddleware, async (req, res) => {
     try {
         const { itineraryId, startDate, endDate } = req.body;
         if (!itineraryId || !startDate || !endDate) {
             return res.status(400).json({ error: '缺少必要的行程資訊' });
         }
-
-        // 將需要同步的資料暫存到 session 中
         req.session.syncData = { itineraryId, startDate, endDate };
-
         const scopes = ['https://www.googleapis.com/auth/calendar.events'];
         const authorizationUrl = oauth2Client.generateAuthUrl({
             access_type: 'offline',
             scope: scopes,
             include_granted_scopes: true
         });
-
-        // 將授權 URL 回傳給前端
         res.json({ authorizationUrl });
-
     } catch (error) {
         console.error('準備同步時發生錯誤:', error);
         res.status(500).send('伺服器錯誤');
@@ -41,10 +34,9 @@ router.post('/prepare-sync', authMiddleware, async (req, res) => {
 });
 
 
-// --- API 2: Google 授權後的回呼 (Callback) ---
+// API 2: Google 授權後的回呼 (Callback)
 router.get('/callback', async (req, res) => {
     try {
-        // 從 session 中取出我們之前暫存的資料
         const syncData = req.session.syncData;
         if (!syncData) {
             return res.status(400).send('授權階段作業已過期或無效，請重試。');
@@ -54,23 +46,28 @@ router.get('/callback', async (req, res) => {
         const { tokens } = await oauth2Client.getToken(code);
         oauth2Client.setCredentials(tokens);
 
-        // 從資料庫中讀取完整的行程資料
         const itinerary = await Itinerary.findById(syncData.itineraryId);
         if (!itinerary) {
             return res.status(404).send('找不到對應的行程資料');
         }
 
-        // 建立真實的日曆事件
+        // --- 關鍵修正處：建立動態的日曆事件 ---
         const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
+        
+        // 為了建立正確的全天事件，結束日期需要加一天
+        const endDate = new Date(syncData.endDate);
+        endDate.setDate(endDate.getDate() + 1);
+        const endDateString = endDate.toISOString().split('T')[0]; // 格式化為 'YYYY-MM-DD'
+
         const event = {
             'summary': itinerary.title, // 使用行程標題
-            'description': itinerary.conversation.map(c => `${c.role}: ${c.content}`).join('\n\n'), // 使用對話紀錄
-            'location': itinerary.route.startCity, // 使用起點城市
+            'description': itinerary.conversation.map(c => `${c.role === 'user' ? '你' : 'AI'}: ${c.content}`).join('\n\n'), // 使用對話紀錄作為描述
+            'location': itinerary.route.startCity, // 使用起點城市作為地點
             'start': {
-                'date': syncData.startDate, // 使用使用者選擇的開始日期 (全天事件)
+                'date': syncData.startDate, // 使用使用者選擇的開始日期
             },
             'end': {
-                'date': syncData.endDate, // 使用使用者選擇的結束日期 (全天事件)
+                'date': endDateString, // 使用處理過的結束日期
             },
         };
 
@@ -79,11 +76,12 @@ router.get('/callback', async (req, res) => {
             resource: event,
         });
 
-        // 清除 session 中的暫存資料
-        req.session.syncData = null;
+        req.session.syncData = null; // 清除 session
         
-        // 將使用者導回前端，並帶上成功訊息
-        res.redirect('https://cheerful-choux-16e1ba.netlify.app?sync_success=true');
+        // 跳轉回 Netlify 網站，並附上成功訊息的查詢參數
+        const successUrl = new URL(process.env.NETLIFY_SITE_URL || 'https://cheerful-choux-16e1ba.netlify.app');
+        successUrl.searchParams.set('sync_success', 'true');
+        res.redirect(successUrl.href);
 
     } catch (error) {
         console.error('處理 Google Callback 時發生錯誤:', error);
