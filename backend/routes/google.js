@@ -79,7 +79,7 @@ router.get('/callback', async (req, res) => {
         req.session.syncData = null; // 清除 session
         
         // 跳轉回 Netlify 網站，並附上成功訊息的查詢參數
-        const successUrl = new URL(process.env.NETLIFY_SITE_URL || 'https://cheerful-choux-16e1ba.netlify.app');
+        const successUrl = new URL(process.env.NETLIFY_SITE_URL || 'https://incredible-swan-2f06e7.netlify.app');
         successUrl.searchParams.set('sync_success', 'true');
         res.redirect(successUrl.href);
 

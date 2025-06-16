@@ -1,5 +1,5 @@
 /* style.css (最終黃金標準版) */
-    
+
 /* --- App 佈局 --- */
 .app-layout {
     display: grid;
@@ -35,7 +35,27 @@ body {
     margin: 0;
     line-height: 1.7;
 }
+
+/* --- 動畫效果 --- */
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.fade-in-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@keyframes gradient-flow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 
 /* --- 主要視覺區 (Hero) --- */
 .hero {
@@ -47,7 +67,19 @@ body {
     overflow: hidden;
     border-radius: 20px;
 }
-.main-title { font-family: var(--heading-font); font-size: 3.8rem; font-weight: 700; margin-bottom: 15px; }
+.main-title {
+    font-family: var(--heading-font);
+    font-size: 4.2rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    background: linear-gradient(125deg, #FFDE59, #ffffff, #89CFF0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    background-size: 200% 200%;
+    animation: gradient-flow 5s ease infinite;
+}
 .subtitle { font-size: 1.25rem; font-weight: 400; max-width: 600px; margin: 0 auto 40px; opacity: 0.9; }
 .cta-button { font-family: var(--heading-font); font-weight: 700; background-color: var(--secondary-color); color: var(--text-color); padding: 18px 35px; text-decoration: none; font-size: 1.1rem; border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: all 0.3s ease; }
 .cta-button:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
@@ -62,10 +94,15 @@ body {
 
 /* --- 功能介紹區 --- */
 .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; padding: 80px 5%; }
-.feature-card { background-color: white; border: none; border-radius: 20px; padding: 40px; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); transition: transform 0.3s, box-shadow 0.3s; animation: fadeInUp 0.5s ease-out forwards; opacity: 0; }
-.feature-card:hover { transform: translateY(-12px); box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12); }
+.feature-card { background-color: white; border: none; border-radius: 20px; padding: 40px; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); transition: transform 0.4s ease, box-shadow 0.4s ease; }
+.feature-card:hover { transform: translateY(-15px); box-shadow: 0 20px 40px rgba(52, 73, 94, 0.15); }
 .feature-icon { width: 90px; height: 90px; margin-bottom: 25px; object-fit: contain; }
 .feature-card h2 { font-family: var(--heading-font); color: var(--primary-color); font-size: 1.7rem; margin-bottom: 15px; }
+
+.booking-links { margin-top: 20px; display: flex; justify-content: center; gap: 15px; }
+.booking-links a { display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; font-weight: bold; color: #fff; background: var(--primary-color); padding: 12px 24px; border-radius: 8px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 169, 255, 0.2); border: none; }
+.booking-links a:hover { background: #0089d1; color: white; transform: translateY(-3px) scale(1.05); box-shadow: 0 6px 20px rgba(0, 169, 255, 0.3); }
+.booking-links a svg { width: 18px; height: 18px; }
 
 /* --- 景點照片區 --- */
 .gallery { text-align: center; padding: 60px 5%; background-color: #f7fafd; }
@@ -80,46 +117,63 @@ body {
 /* --- 行程規劃儀表板 --- */
 .planner-section { background: #f7fafd; border-radius: 20px; overflow: hidden; }
 .planner-title { font-family: var(--heading-font); text-align: center; font-size: 1.8rem; color: var(--text-color); margin-bottom: 20px; padding: 20px 20px 0 20px;}
+.save-itinerary-form { margin: 0 0 20px 0; display: flex; gap: 10px; }
+.save-itinerary-form input { flex-grow: 1; border: 2px solid var(--primary-color); padding: 10px 15px; border-radius: 8px; font-size: 1rem; }
+.save-itinerary-form button { border: none; background-color: var(--accent-color); color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; white-space: nowrap; }
+
 .planner-container { background: white; }
 .tab-buttons { display: flex; background-color: #f1f3f5; }
 .tab-btn { flex: 1; padding: 15px 10px; border: none; background: transparent; font-family: var(--heading-font); font-size: 0.9rem; font-weight: 700; color: #868e96; cursor: pointer; transition: all 0.3s ease; border-bottom: 3px solid transparent; }
 .tab-btn:hover { background-color: #e9ecef; color: var(--primary-color); }
 .tab-btn.active { color: var(--primary-color); border-bottom: 3px solid var(--primary-color); }
+
 .tab-content { padding: 20px; }
-.tab-pane { display: none; animation: fadeInUp 0.5s; }
-.tab-pane.active { display: block; }
+.tab-pane { display: none; }
+.tab-pane.active { display: block; animation: fadeInUp 0.5s; }
 .tab-pane h3 { font-family: var(--heading-font); font-size: 1.5rem; color: var(--text-color); margin-top: 0; }
+
+/* --- 頁籤內容樣式 --- */
 .chat-window { height: 350px; border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; margin-bottom: 15px; overflow-y: auto; background: #fff; }
 .message { padding: 8px 12px; border-radius: 15px; margin-bottom: 10px; max-width: 80%; line-height: 1.5; }
 .ai-message { background-color: #e9ecef; border-bottom-left-radius: 0; float: left; clear: both; }
 .user-message { background-color: var(--primary-color); color: white; border-bottom-right-radius: 0; float: right; clear: both; }
+.loading-bubble { display: flex; align-items: center; padding: 10px 15px; background-color: #e9ecef; border-radius: 15px; border-bottom-left-radius: 0; float: left; clear: both; margin-bottom: 10px; }
+.loading-bubble .dot { width: 8px; height: 8px; margin: 0 2px; background-color: #868e96; border-radius: 50%; animation: bounce 1.4s infinite ease-in-out both; }
+.loading-bubble .dot:nth-child(1) { animation-delay: -0.32s; }
+.loading-bubble .dot:nth-child(2) { animation-delay: -0.16s; }
 .chat-input-area { display: flex; }
 .chat-input-area input { flex: 1; padding: 10px; border: 1px solid #ced4da; border-radius: 8px 0 0 8px; }
 .chat-input-area button { padding: 10px 20px; border: none; background: var(--primary-color); color: white; border-radius: 0 8px 8px 0; cursor: pointer; }
-.route-planner { display: grid; grid-template-columns: 1fr; gap: 15px; } /* 確保垂直排列 */
-.route-inputs { display: flex; flex-direction: column; gap: 10px; } /* 確保內部元素垂直排列 */
+
+.route-planner { display: grid; grid-template-columns: 1fr; gap: 15px; }
+.route-inputs { display: flex; flex-direction: column; gap: 10px; }
 .route-inputs input { width: 100%; box-sizing: border-box; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; }
 #map { background: #e9ecef; border-radius: 8px; height: 250px; width: 100%; }
-.export-item {display: flex; align-items: flex-start; /* 改為頂部對齊 */ flex-wrap: wrap; /* 允許內容換行 */ gap: 15px; /* 縮小一點間距 */ padding: 20px; background-color: #f8f9fa; border-radius: 12px; margin-top: 20px;}
-.export-icon { font-size: 2rem; }
+
+.export-item { display: flex; align-items: flex-start; flex-wrap: wrap; gap: 15px; padding: 20px; background-color: #f8f9fa; border-radius: 12px; margin-top: 20px; }
+.export-icon { font-size: 2.5rem; margin-right: 5px; }
+.export-text { flex-grow: 1; }
 .export-text h4 { margin: 0 0 5px 0; font-family: var(--heading-font); }
-.export-text p { margin: 0; font-size: 0.8rem; color: #6c757d; }
-.export-btn {
-    margin-left: auto;
-    padding: 8px 15px;
-    border: none;
-    background: var(--primary-color);
-    color: white;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    white-space: nowrap;
-    flex-shrink: 0; /* 防止按鈕被壓縮 */
-}
+.export-text p { margin: 0; font-size: 0.9rem; color: #6c757d; }
+.export-btn { margin-left: auto; padding: 8px 15px; border: none; background: var(--primary-color); color: white; font-weight: bold; border-radius: 8px; cursor: pointer; transition: background-color 0.3s; white-space: nowrap; flex-shrink: 0; }
+.date-input-group { display: grid; grid-template-columns: auto 1fr; gap: 8px 10px; align-items: center; margin-top: 15px; width: 100%; }
+.date-input-group label { font-size: 0.9rem; }
+.date-input-group input[type="date"] { border: 1px solid #ccc; border-radius: 5px; padding: 5px; }
 .email-input-group { display: flex; margin-top: 10px; }
 .email-input-group input { width: 100%; padding: 10px; border: 1px solid #ced4da; border-radius: 8px 0 0 8px; }
 .email-input-group button { border-radius: 0 8px 8px 0; margin-left: -1px; }
+
+.itinerary-list { list-style: none; padding: 0; }
+.itinerary-list li { background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px; border-left: 5px solid var(--secondary-color); cursor: pointer; transition: transform 0.2s; }
+.itinerary-list li:hover { transform: scale(1.02); }
+.itinerary-list-item { display: flex; justify-content: space-between; align-items: center; }
+.itinerary-list h5 { margin: 0 0 5px 0; }
+.itinerary-list p { margin: 0; font-size: 0.8rem; color: #6c757d; }
+.itinerary-item-actions { display: flex; gap: 5px; }
+.edit-btn, .delete-btn { background: #6c757d; color: white; border: none; border-radius: 5px; padding: 5px 10px; font-size: 0.8rem; cursor: pointer; opacity: 0.7; transition: all 0.3s; }
+.edit-btn { background: #007bff; }
+.delete-btn { background: #ff4d4d; }
+.edit-btn:hover, .delete-btn:hover { opacity: 1; }
 
 /* --- Modal 彈出視窗 --- */
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
@@ -134,162 +188,3 @@ body {
 .modal-content input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 2px rgba(0, 169, 255, 0.2); }
 .modal-content button[type="submit"] { padding: 12px; border: none; border-radius: 8px; background: var(--primary-color); color: white; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 10px; transition: background-color 0.2s; }
 .modal-content button[type="submit"]:hover { background-color: #0089d1; }
-
-/* --- 儲存行程表單 --- */
-.save-itinerary-form { margin: 0 0 20px 0; display: flex; gap: 10px; }
-.save-itinerary-form input { flex-grow: 1; border: 2px solid var(--primary-color); padding: 10px 15px; border-radius: 8px; font-size: 1rem; }
-.save-itinerary-form button { border: none; background-color: var(--accent-color); color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; white-space: nowrap; }
-
-/* --- 我的行程列表 --- */
-.itinerary-list { list-style: none; padding: 0; }
-.itinerary-list li { background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px; border-left: 5px solid var(--secondary-color); cursor: pointer; transition: transform 0.2s; }
-.itinerary-list li:hover { transform: scale(1.02); }
-.itinerary-list-item { display: flex; justify-content: space-between; align-items: center; }
-.itinerary-list h5 { margin: 0 0 5px 0; }
-.itinerary-list p { margin: 0; font-size: 0.8rem; color: #6c757d; }
-.itinerary-item-actions { display: flex; gap: 5px; }
-.edit-btn, .delete-btn { background: #6c757d; color: white; border: none; border-radius: 5px; padding: 5px 10px; font-size: 0.8rem; cursor: pointer; opacity: 0.7; transition: all 0.3s; }
-.edit-btn { background: #007bff; }
-.delete-btn { background: #ff4d4d; }
-.edit-btn:hover, .delete-btn:hover { opacity: 1; }
-/* style.css */
-.date-input-group {
-    display: grid;
-    grid-template-columns: auto 1fr; /* 建立兩欄：標籤自動寬度，輸入框佔滿剩餘空間 */
-    gap: 8px 10px; /* 設定行與列的間距 */
-    align-items: center;
-    margin-top: 15px; /* 增加與上方文字的距離 */
-    width: 100%; /* 確保它佔滿寬度 */
-}
-.date-input-group label {
-    font-size: 0.9rem;
-}
-.date-input-group input[type="date"] {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 5px;
-}
-
-/* --- AI 讀取中動畫 --- */
-.loading-bubble {
-    display: flex;
-    align-items: center;
-    padding: 10px 15px;
-    background-color: #e9ecef;
-    border-radius: 15px;
-    border-bottom-left-radius: 0;
-    float: left;
-    clear: both;
-    margin-bottom: 10px;
-}
-
-.loading-bubble .dot {
-    width: 8px;
-    height: 8px;
-    margin: 0 2px;
-    background-color: #868e96;
-    border-radius: 50%;
-    animation: bounce 1.4s infinite ease-in-out both;
-}
-
-.loading-bubble .dot:nth-child(1) { animation-delay: -0.32s; }
-.loading-bubble .dot:nth-child(2) { animation-delay: -0.16s; }
-
-@keyframes bounce {
-  0%, 80%, 100% { transform: scale(0); }
-  40% { transform: scale(1.0); }
-}
-/* style.css (貼在最下方) */
-
-/* --- 優化一：滾動載入動畫的樣式 --- */
-.fade-in-on-scroll {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
-
-.fade-in-on-scroll.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-
-/* --- 優化二：精緻化的懸停效果 --- */
-
-/* 為功能卡片增加更柔和的陰影和浮動效果 */
-.feature-card {
-    /* ... 您原有的樣式保持不變，這裡只展示新增/修改的 ... */
-    transition: transform 0.4s ease, box-shadow 0.4s ease; /* 讓過渡更平滑 */
-}
-
-.feature-card:hover {
-    transform: translateY(-15px); /* 浮動更高 */
-    box-shadow: 0 20px 40px rgba(52, 73, 94, 0.15); /* 陰影更深、更廣 */
-}
-
-
-/* --- 優化三：漸層流光文字標題 --- */
-.main-title {
-    font-family: var(--heading-font);
-    font-size: 4.2rem; /* 稍微再放大一點，更有氣勢 */
-    font-weight: 700;
-    margin-bottom: 15px;
-    
-    /* 漸層文字的核心技巧 */
-    background: linear-gradient(125deg, #FFDE59, #ffffff, #89CFF0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-fill-color: transparent;
-
-    /* 讓漸層背景動起來，產生流光效果 */
-    background-size: 200% 200%;
-    animation: gradient-flow 5s ease infinite;
-}
-
-/* 定義流光動畫 */
-@keyframes gradient-flow {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-/* style.css (貼在最下方) */
-
-/* --- 特色區塊中的預訂連結按鈕 --- */
-.booking-links {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-}
-
-.booking-links a {
-    /* 使用 Flexbox 來對齊圖示和文字 */
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px; /* 圖示和文字之間的距離 */
-
-    text-decoration: none;
-    font-weight: bold;
-    color: #fff; /* 文字顏色改為白色 */
-    background: var(--primary-color); /* 使用更醒目的主色 */
-    padding: 12px 24px; /* 加大一點 padding */
-    border-radius: 8px; /* 改為小圓角，更現代 */
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 169, 255, 0.2); /* 加上陰影 */
-    border: none;
-}
-
-.booking-links a:hover {
-    background: #0089d1; /* 滑鼠懸停時加深顏色 */
-    color: white;
-    transform: translateY(-3px) scale(1.05); /* 讓按鈕浮起來並稍微放大 */
-    box-shadow: 0 6px 20px rgba(0, 169, 255, 0.3); /* 陰影更明顯 */
-}
-
-/* 調整按鈕內的 SVG 圖示樣式 */
-.booking-links a svg {
-    width: 18px;
-    height: 18px;
-}
