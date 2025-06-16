@@ -32,11 +32,12 @@ const corsOptions = {
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.session({
+app.use(session({
     secret: process.env.JWT_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: process.env.NODE_ENV === 'production' }
+    // 在生產環境且使用 HTTPS 時，cookie 的 secure 應設為 true
+    cookie: { secure: app.get('env') === 'production' }
 }));
 
 // backend/server.js
