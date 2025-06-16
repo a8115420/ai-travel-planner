@@ -26,7 +26,7 @@ const port = process.env.PORT || 3000;
 
 // --- 步驟二：設定中介軟體 (Middleware) ---
 const corsOptions = {
-  origin: process.env.NETLIFY_SITE_URL || 'https://cheerful-choux-16e1ba.netlify.app',
+  origin: process.env.FRONTEND_URL, // 從環境變數讀取允許的來源
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
