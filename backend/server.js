@@ -23,8 +23,21 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // --- 中間件 ---
+
+// 設定 CORS 選項，明確指定允許的前端網址
+const corsOptions = {
+  origin: 'https://incredible-swan-2f06e7.netlify.app',
+  optionsSuccessStatus: 200
+};
+
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.session({
+    secret: process.env.JWT_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: process.env.NODE_ENV === 'production' }
+}));
 
 // backend/server.js
 const session = require('express-session'); // 在檔案頂部引入
